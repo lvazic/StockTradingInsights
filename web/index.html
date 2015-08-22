@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Stock Trading Volume / Extracted Features</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/2-col-portfolio.css" rel="stylesheet">
+	
+	    <!-- Morris CSS -->
+    <link href="css/morris.css" rel="stylesheet">
+	
+	    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+	
+		 <!-- Raphael.js -->
+    <script src="js/raphael-min.js"></script>
+	
+	 <!-- Morris.js -->
+    <script src="js/morris.js"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	
+
+	
+	
+</head>
+
+<body>
+
+
+
+    <!-- Page Content -->
+    <div class="container" id="container">
+
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Stock Trading Volume
+                    <small>Extracted Features</small>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+		<div class = "row">
+		<div class="col-lg-12">
+                <p id = "description">
+This page presents extracted features of stock trading volume data pulled from Yahoo! Finance API. Extracted features could indicate patterns of important trading days or the ways that underlying factors can drive the volume of multiple stocks. Left chart indicates stocks mostly related to a certain feature in terms of stock trading volume change, while the right chart indicates dates mostly connected with identified trading volume changes for a feature.
+                </p>
+            </div>
+			
+		</div>
+		<hr>
+    <div class="panel-body">
+      <form role= "form" name="basicform" id="basicform" method="post" style="padding-left: 0px; padding-right: 95px;">
+        
+        <div id="sf1" class="frm">
+          <fieldset>
+            
+							
+							<div class="form-group" id="kompanije">
+                                <label>Companies:</label>
+								
+								<div class="checkbox">
+								<label>
+								<input type="checkbox" name="kompanija" id="Google" value="Google">Google
+								</label>
+								</div>
+								<div class="checkbox">
+								<label>
+								<input type="checkbox" name="kompanija" id="Yahoo" value="Yahoo">Yahoo
+								</label>
+								</div>
+								<div class="checkbox">
+								<label>
+								<input type="checkbox" name="kompanija" id="Microsoft" value="Microsoft">Microsoft
+								</label>
+								</div>
+								<div class="checkbox">
+								<label>
+								<input type="checkbox" name="kompanija" id="Apple" value="Apple">Apple
+								</label>
+								</div>
+								<div class="checkbox">
+								<label>
+								<input type="checkbox" name="kompanija" id="Cisco" value="Cisco">Cisco
+								</label>
+								</div>
+								<div class="checkbox">
+								<label>
+								<input type="checkbox" name="kompanija" id="Motorola" value="Motorola">Motorola
+								</label>
+                                </div>
+								
+                            
+                            </div>
+	<div class="form-group">
+                                <label>Number of features:</label>
+                                <input class="form-control" name="numFeatures" id="numFeatures">
+                                <p class="help-block">Enter the number of features to be extracted</p>
+                            </div>
+							
+			
+            <div class="clearfix" style="height: 10px;clear: both;"></div>
+            <div class="form-group">
+
+                <button class="btn btn-primary open2" name = "slanje" type="submit">Analyze </button> 
+
+            </div>
+
+
+          </fieldset>
+        </div>
+
+
+        
+      </form>
+    </div>
+	
+	<hr>
+	
+	<div name="dates" id="dates">
+	<p id="startDate"> <p>
+	<p id="endDate"> </p>
+	</div>
+	
+	
+		<div id = "charting"> 
+
+        
+
+
+		</div>
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Luka Važić 2015</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+		<script type="text/javascript">
+  
+  jQuery().ready(function() {
+
+
+     $("#basicform").submit(function(e) {
+		  
+		   var $this = $(this);
+  e.preventDefault();
+		
+		var selected = [];
+$('.checkbox input:checked').each(function() {
+    selected.push($(this).attr('id'));
+});
+
+console.log(selected);
+		
+		var numFeatures = $('#numFeatures').val();
+		console.log(numFeatures);
+		
+		var query = '?numFeatures=' + numFeatures;
+		
+		for (i = 0; i < selected.length; i++) { 
+    query += '&t=' + selected[i];
+}
+
+console.log(query);
+jQuery('#charting').html('');
+jQuery('#startDate').html('');
+jQuery('#endDate').html('');
+
+			var data = (function () {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+		'cache': false,
+        'url': "http://localhost:8080/StockTradingInsightsREST/nmf/" + query,
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+			console.log('DATA:' + data);
+			
+		$("#startDate").append("<b>Start date: " + data.startDate +"</b>");
+		$("#endDate").append("<b>End date: " + data.endDate +"</b>");
+		var desc = "This page presents extracted features of stock trading volume data pulled from Yahoo! Finance API. Analysis is performed on the trading period from ".concat(data.startDate).concat(" to ").concat(data.endDate).concat(". Extracted features could indicate patterns of important trading days or the ways that underlying factors can drive the volume of multiple stocks. Left chart indicates stocks mostly related to a certain feature in terms of stock trading volume change, while the right chart indicates dates mostly connected with identified trading volume changes for a feature.");
+	
+		//  $("#description").append(desc);
+
+	//console.log(data);
+	
+	var n = data.features.length;
+for (var i = 0; i < n; i++) {
+  //  alert(data.features[i].id);
+  
+  var fid = data.features[i].id;
+  var stocks = data.features[i].akcije;
+  var dates = data.features[i].datumi;
+  var stockid = "featurestock".concat(i);
+  var dateid = 	"featuredate".concat(i);
+  var appending = " <div class=\"row\">\
+		                <h2>Feature ".concat(data.features[i].id);
+	appending = appending.concat("</h2>\
+            <div class=\"col-md-6 portfolio-item\">\
+                <h3>\
+                    Stocks Most Related to Feature\
+					</h3>");				
+	appending = appending.concat("<div id=\"featurestock",i, "\"></div>\ </div>");
+	appending = appending.concat("<div class=\"col-md-6 portfolio-item\">\
+                <h3>\
+                    Dates Most Related To Feature\
+                </h3>");			
+	appending = appending.concat("\<div id=\"featuredate",i,"\"");
+	appending = appending.concat("></div>\
+            </div>\
+        </div>");
+  
+  $("#charting").append(appending);
+  $('html, body').animate({
+        scrollTop: $('#startDate').offset().top - 20
+    }, 'slow');
+
+}
+
+for (var i = 0; i < n; i++) {
+  //  alert(data.features[i].id);
+  
+  var stocks = data.features[i].akcije;
+  var dates = data.features[i].datumi;
+  var stockid = "featurestock".concat(i);
+  var dateid = 	"featuredate".concat(i);
+  
+  console.log(stocks);
+
+  
+  		Morris.Bar({
+  element: stockid,
+  data: stocks,
+  hoverCallback: function(index, options, content) {
+        return(content);
+    },
+  xkey: "ticker",
+  ykeys: ["weight"],
+  labels: ['Stock Relation in %'],
+  barColors: ['#000000'],
+  xLabelAngle: 30,
+  hideHover: "auto",
+  grid: false,
+
+
+
+});
+
+		
+				Morris.Bar({
+  element: dateid,
+  data: dates,
+  xkey: "date",
+  ykeys: ["weight"],
+  labels: ['Date Relation'],
+  barColors: ['#000000'],
+  xLabelAngle: 30,
+  hideHover: "auto",
+  grid: false,
+
+
+});
+
+}
+			
+        }
+    });
+    return json;
+	console.log(data);
+	$('#container').hide().show(0);
+
+
+})(); 
+	
+	
+	
+	
+
+    }); 
+
+
+  });
+</script>
+	
+
+</body>
+
+</html>
