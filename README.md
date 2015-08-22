@@ -50,21 +50,22 @@ Libraries used in project are:
 </br>
 Core package contains classes in charge for data collection, NMF algorithm and JSON generation. </br>
 Faktorizuj class in sysop package executes the whole operation by invoking methods of classes from core package. </br>
-Kontroler class in logic package invokes the static method of Faktorizuj class to execute the operation </br>
-MainForm class in gui package implements user interface through which a user can select stocks to be analyzed as well as the number of features the algorithm should use. </br>
-After the end of operation execution generated JSON with features data will be sent to Javascript for visualization. Visualizations are presented in user's default web browser.  
+Kontroler class in logic package invokes the static method of Faktorizuj class to execute the operation.  </br>
+System can be invoked using RESTful web service by forwarding parameters such as number of features and company names via HTTP GET request. </br>
+User interface is web based and it is used for selecting stocks, number of features and visualization of results.</br>
+After the end of operation execution generated JSON with features data will be sent to client for visualization. 
 
 # 5. Results Example
-As input, three stocks were selected: Google (GOOG), Yahoo! (YHOO) and Apple (AAPL). 10 features were requested to be extracted for trading volume of these three stocks. </br>
+As input, three stocks were selected: Google (GOOG), Yahoo! (YHOO) and Motorola (MSI). 10 features were requested to be extracted for trading volume of these three stocks. </br>
 After processing, the result page contains 2 charts per each feature: one for stock to feature expression and the other one for date to feature expression. </br>
 
 Let's take a look at an example: </br></br>
 ![alt tag](doc/img/example.jpg)  
 </br>
 
-We can determine that AAPL stock is extremely expressed in this feature, and that the dates mostly expressed to this feature are September 3rd 2014 and May 30th 2014. Searching for news article about Apple published on these dates gives us context:
-</br>On September 3rd 2014 Apple's stock went down after Samsung's event in Berlin when they revealed Samsung Gear device, erasing $26 billion of the Apple’s market capitalization in one day.
-<br>On May 30th 2014 Apple's stock reached top price for the last year and a half due to investor optimism connected to recent Beat acquisition and expectation of Apple's Worldwide Developers Conference where new product and services are usually unveiled.</br></br>
+We can determine that YHOO stock is extremely expressed in this feature, and that the top two dates mostly related to this feature are September 19th 2014 and January 28th 2015. Searching for news article about Yahoo! published on these dates gives us context:
+</br>On September 19th 2014 Yahoo!'s stocks went down 2.7 percent after Alibaba Group Holding, which Yahoo owns a stake in, made its stock market debut.Yahoo, which sold more than 120 million of its 524 million Alibaba shares in the initial public offering, declined to $40.93 at the close in New York.
+<br>On January 28th 2015 Yahoo Chief Executive Marissa Mayer unveiled a plan to split off the company's 40-percent stake in Alibaba into a new company called SpinCo, so the company could avoid a potential tax bill of up to $16 billion under a traditional sale of the stake. Shares in Yahoo jumped almost 7 percent to $51.2 in after-hours trading on Tuesday as investors cheered the plan.</br></br>
 This feature is a good example why using trading volume instead of closing price is better for identifying interesting features in stock trading data.
 
 # 6. Acknowledgements
