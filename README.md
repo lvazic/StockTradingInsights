@@ -30,10 +30,55 @@ weights matrix by the features matrix.
 In this project NMF technique is used to extract the important features of data about stock trading volume and to identify relevance of each stock and date to extracted features so underlying patterns of important trading days or the ways that underlying factors can drive the volume of multiple stocks.  
 
 # 3. Dataset
-Dataset used in this project is obtained from [Yahoo! Finance API](http://finance.yahoo.com/).  
-This API returns CSV file with information about certain stocks, containing their opening price, highest price, lowest price, closing price, adjusted closing price and their volume per date.  
-Volume is
-used instead of closing price because NMF tries to find positive features that can be
+Dataset used in this project is obtained from [Yahoo! Finance API](http://finance.yahoo.com/). </br>
+To retrieve the data for each stock a URL is used to access the API. Web service uses HTTP GET method to process API calls. The URL would look like this in case that we want to obtain the data about Google stock trading: "http://ichart.yahoo.com/table.csv?s=GOOG". </br>
+An example of API response can be seen below: </br>
+
+<table>
+<tbody><tr><td>Date</td>
+<td>Open</td>
+<td>High</td>
+<td>Low</td>
+<td>Close</td>
+<td>Volume</td>
+<td>Adj Close</td>
+</tr>
+<tr><td>2015-08-24</td>
+<td>573.00</td>
+<td>599.330017</td>
+<td>565.049988</td>
+<td>589.609985</td>
+<td>5721500</td>
+<td>589.609985</td>
+</tr>
+<tr><td>2015-08-21</td>
+<td>639.780029</td>
+<td>640.049988</td>
+<td>612.330017</td>
+<td>612.47998</td>
+<td>4227300</td>
+<td>612.47998</td>
+</tr>
+<tr><td>2015-08-20</td>
+<td>655.460022</td>
+<td>662.98999</td>
+<td>642.900024</td>
+<td>646.830017</td>
+<td>2624600</td>
+<td>646.830017</td>
+</tr>
+<tr><td>2015-08-19</td>
+<td>656.599976</td>
+<td>667.00</td>
+<td>654.190002</td>
+<td>660.900024</td>
+<td>2131600</td>
+<td>660.900024</td>
+</tr>
+</tbody></table>
+
+This API returns a CSV file with information about a certain stock. Open is stock's opening price of the trading day, High is the highest price, Low is the lowest price, Close is the closing price, Adj Close is the adjusted closing price and Volume is the total number of stocks traded on that day for a certain stock.
+Volume is used instead of closing price because NMF tries to find positive features that can be
 added together; prices often move down in response to events, and NMF will not find
 negative features. Volume, however, is more easily modeled as having a basal level in the absence of external events
 that can increase in response to outside influence, making it suitable for positive
@@ -44,9 +89,10 @@ The application is written in Java and Javascript. All core operations are imple
 </br>
 Libraries used in project are:  
 
-[JAMA](http://math.nist.gov/javanumerics/jama/) for matrix operations </br>
-[Opencsv](http://opencsv.sourceforge.net/) for reading CSV data retrieved through API calls </br> [GSON](https://github.com/google/gson) to format the resulting features for visualization </br>
-[Morris.js](http://morrisjs.github.io/morris.js/) for data visualization </br>
+[JAMA](http://math.nist.gov/javanumerics/jama/) for matrix operations. JAMA is a basic linear algebra package for Java. It provides user-level classes for constructing and manipulating real, dense matrices. </br>
+[Opencsv](http://opencsv.sourceforge.net/) for reading CSV data retrieved through API calls. Opencsv is a very simple csv (comma-separated values) parser library for Java. </br> 
+[GSON](https://github.com/google/gson) to format the resulting features for visualization. GSON is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. </br>
+[Morris.js](http://morrisjs.github.io/morris.js/) for data visualization. Morris.js is the library that powers the graphs using Javascript. It's a very simple API for drawing line, bar, area and donut charts. </br>
 </br>
 Core package contains classes in charge for data collection, NMF algorithm and JSON generation. </br>
 Faktorizuj class in sysop package executes the whole operation by invoking methods of classes from core package. </br>
