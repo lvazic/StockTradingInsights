@@ -77,7 +77,7 @@ An example of API response can be seen below: </br>
 </tr>
 </tbody></table>
 
-This API returns a CSV file with information about a certain stock. Open is stock's opening price of the trading day, High is the highest price, Low is the lowest price, Close is the closing price, Adj Close is the adjusted closing price and Volume is the total number of stocks traded on that day for a certain stock.
+This API returns a CSV file with information about a certain stock. Open is stock's opening price of the trading day, High is the highest price, Low is the lowest price, Close is the closing price, Adj Close is the adjusted closing price and Volume is the total number of stocks traded on that day for a certain stock. </br>
 If we extract volume only, we get a column vector. By merging column vectors for different stocks we get our data matrix - the one that is going to be factorized.
 Volume is used instead of closing price because NMF tries to find positive features that can be
 added together; prices often move down in response to events, and NMF will not find
