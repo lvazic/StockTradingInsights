@@ -204,7 +204,7 @@ jQuery('#endDate').html('');
         'async': false,
         'global': false,
 		'cache': false,
-        'url': "http://localhost:8080/StockTradingInsights/nmf/" + query,
+        'url': "http://localhost:8080/StockTradingInsights/api/nmf/" + query,
         'dataType': "json",
         'success': function (data) {
             json = data;
